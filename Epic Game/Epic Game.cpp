@@ -10,14 +10,26 @@
 
 std::pair <int, int> map_size_function()
 {
+	COORD c2 = GetLargestConsoleWindowSize(GetStdHandle(STD_OUTPUT_HANDLE));
+
+	int supplementary = c2.X;
+	int max_x;
+
+	if (supplementary % 2 == 1)
+		max_x = supplementary / 2;
+	else
+		max_x = supplementary / 2 - 1;
+
+	int max_y = c2.Y - 8;
+
 	int x, y;
 
-	std::cout << "Enter width of the map (integer number greater than 5 but maximum - 130): ";
+	std::cout << "Enter width of the map (integer number greater than 5 but maximum - "<<max_x<<"): ";
 	std::cin >> x;
 
 	bool control = std::cin.fail();
 
-	while (control || x<6 || x>130)
+	while (control || x<6 || x>max_x)
 	{
 		Beep(1220, 75);
 
@@ -29,12 +41,12 @@ std::pair <int, int> map_size_function()
 		control = std::cin.fail();
 	}
 
-	std::cout << "Enter length of the map (integer number greater than 5 but maximum - 60): ";
+	std::cout << "Enter length of the map (integer number greater than 5 but maximum - "<<max_y<<"): ";
 	std::cin >> y;
 
 	control = std::cin.fail();
 
-	while (control || y<6 || y>60)
+	while (control || y<6 || y>max_y)
 	{
 		Beep(1220, 75);
 
@@ -78,12 +90,12 @@ int choosing_level_of_difficulty()
 {
 	int level = 0;
 
-	std::cout << "Choose level of difficulty\n1. Easy\n2. Normal\n";
+	std::cout << "Choose level of difficulty\n1. Easy\n2. Normal\n3. Difficult\n";
 	std::cin >> level;
 
 	bool control = std::cin.fail();
 
-	while (control||level<1||level>2)
+	while (control||level<1||level>3)
 	{
 		Beep(520, 75);
 
@@ -98,7 +110,7 @@ int choosing_level_of_difficulty()
 	return level;
 }
 
-bool standard_mode()
+bool game_mode(bool objective_movement)
 {
 	//srand(time(NULL));
 	srand((unsigned int)time(NULL));
@@ -107,15 +119,15 @@ bool standard_mode()
 
 	std::pair <int, int> map_size = map_size_function();
 
-	Board main_board(map_size.first, map_size.second, level);
+	Board main_board(map_size.first, map_size.second, level, objective_movement);
 
 	std::cout << "Everything is ready. Press ENTER\n";
+	std::cin.ignore(INT_MAX, '\n');
 	std::cin.get();
 
 	main_board.set_up_game();
 	main_board.gameplay();
-
-	std::cout << main_board.result << std::endl;
+	main_board.end_game();
 
 	delete[] main_board.enemy;
 
@@ -139,30 +151,74 @@ bool console_options()
 	sr.Bottom = c2.Y - 1;
 	SetConsoleWindowInfo(handle, true, &sr); // ustawiasz rozmiar okna (jednostka to szerokoœæ i wysokoœæ pojedynczego znaku)
 	
-	//std::cout << c2.X << " " << c2.Y << std::endl; // potencjalne obliczanie maksymalnej mapy
+	//std::cout << c2.X/2 << " " << c2.Y-8 << std::endl; // potencjalne obliczanie maksymalnej mapy
 
 	return 1;
+}
+
+bool game_handling()
+{
+	int interface_command = main_interface();
+
+	switch (interface_command)
+	{
+	case 1:
+		game_mode(0); // without objective_movement
+		break;
+	case 2:
+		game_mode(1); // with objective_movement (it moves once three turns)
+		break;
+	case 3:
+	default:
+		exit(0);
+	}
+
+	return 1;
+}
+
+bool next_game()
+{
+	std::cout << "Would you like to play again?\n(Enter 1 if yes, or 2 if no)\n";
+	int command;
+	std::cin >> command;
+
+	bool control = std::cin.fail();
+
+	while (control)
+	{
+		Beep(520, 75);
+
+		std::cin.clear();
+		std::cin.ignore(INT_MAX, '\n');
+		std::cout << "You have entered invalid number\nTry again." << std::endl;
+		std::cin >> command;
+
+		control = std::cin.fail();
+	}
+
+	system("CLS");
+
+	if (command == 1)
+		return 1;
+	else
+		return 0;
 }
 
 int main()
 {
 	console_options();
 
-	int interface_command = main_interface();
+	game_handling();
 
-	switch (interface_command)
+	bool another_game = next_game();
+
+	while (another_game)
 	{
-	case 1:
-		standard_mode();
-		break;
-	case 2:
-		break;
-	case 3:
-	default:
-		return 0;
+		game_handling();
+		another_game = next_game();
 	}
 
-	std::cin.get();
+	//std::cin.get();
 
 	return 0;
 }
@@ -173,16 +229,11 @@ int main()
 
 //Difficulty level
 //Normal: number_of_enemies=size_x*size_y/3
-//Easy: number_of_enemies=size_x*size_y/5
+//Easy: number_of_enemies=size_x*size_y/6
 
 
-
-
-
-
-
-
-
+//Opcja kustomizacji markerow?
+//Dostosowywanie rozmiaru do poszczegolnych monitorow
 
 
 

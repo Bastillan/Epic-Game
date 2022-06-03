@@ -148,6 +148,15 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Epic Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\Epic_game_icon.ico" />
+    <Image Include="..\..\Epic_game_icon.png" />
+    <Image Include="..\..\Epic_game_icon_scale.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

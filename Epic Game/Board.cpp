@@ -5,13 +5,17 @@
 #include <set>
 #include <cstdlib> // exit()
 
-Board::Board(int size_x, int size_y, int level)
+Board::Board(int size_x, int size_y, int level, bool objective_movement)
 {
 	this->size_x = size_x;
 	this->size_y = size_y;
+	this->objective_movement = objective_movement;
+	counter = 0;
 
-	if(level==1)
-		number_of_enemies = (size_x * size_y) / 5;
+	if (level == 1)
+		number_of_enemies = (size_x * size_y) / 9;
+	else if (level == 2)
+		number_of_enemies = (size_x * size_y) / 6;
 	else
 		number_of_enemies = (size_x * size_y) / 3;
 	
@@ -73,7 +77,7 @@ bool Board::spawn_objective()
 {
 	objective.marker = char(219);
 	objective.coordinate_x = rand() % size_x;
-	objective.coordinate_y = rand() % (size_y - 5);
+	objective.coordinate_y = rand() % (size_y/3);
 
 	return 1;
 }
@@ -134,7 +138,13 @@ bool Board::update_map()
 	}
 
 	main_player.localization = calculation_of_localization(main_player);
-	map_output[main_player.localization] = main_player.marker;
+
+	if (map_output[main_player.localization] == enemy[0].marker)
+		map_output[main_player.localization] = '*';
+	else if (map_output[main_player.localization] == objective.marker)
+		map_output[main_player.localization] = '#';
+	else
+		map_output[main_player.localization] = main_player.marker;
 
 	return 1;
 }
@@ -144,6 +154,180 @@ int Board::calculation_of_localization(Player player)
 	int output_localization = (player.coordinate_y + 1) * width + (player.coordinate_x + 1) * 2 - 1;
 
 	return output_localization;
+}
+
+bool Board::objective_movement_function()
+{
+	if (counter % 3 == 0)
+	{
+		int direction = 0;
+
+		direction = rand() % 4;
+
+		while (!objective.move(direction, size_x, size_y))
+			direction = rand() % 4;
+	}
+
+	counter++;
+
+	return 1;
+
+}
+
+bool Board::gameplay()
+{
+	char command;
+
+	while (true)
+	{
+		command = _getch();
+
+		if (command == 'x') // wyjscie z gry
+			exit(0);
+
+		while (!main_player.move(command, size_x, size_y))
+		{
+			Beep(220, 75); // wydanie dzwieku
+
+			command = _getch();
+
+			if (command == 'x') // wyjscie z gry
+				exit(0);
+		}
+
+		if (objective_movement)
+			objective_movement_function();
+
+		enemy_movement();
+
+		display_board();
+		result_checking();
+
+		if (result != 0) // jesli gra sie skonczy
+			break;
+	}
+
+	return 1;
+}
+
+bool Board::enemy_movement()
+{
+	bool* layout= new bool[size_x*size_y];
+	bool* enemies_left = new bool[size_x * size_y];
+
+	for (int y = 0; y < size_y; ++y)
+		for (int x = 0; x < size_x; ++x)
+		{
+			layout[y * size_x + x] = 0;
+			enemies_left[y * size_x + x] = 0;
+		}
+
+	layout[objective.coordinate_y * size_x + objective.coordinate_x] = 1; // zablokowanie koordynatów objective
+
+	for (int i = 0; i < number_of_enemies; ++i)
+		enemies_left[enemy[i].coordinate_y * size_x + enemy[i].coordinate_x] = 1;
+
+	for (int i = 0; i < number_of_enemies; ++i)
+	{
+		std::string options = which_directions_possible(i, layout, enemies_left); // w stringu options znajduja sie cyfry oznaczajace mozliwe kierunki ruchu
+		int decision; // ktory znak z options nalezy wybrac
+
+		if (options.length() > 0) // jezeli moze sie ruszyc, tzn. ma choc jedna opcje ruchu
+		{
+			decision = rand() % options.length(); // losowanie ktory znak bedzie bedzie decydowal o kierunku ruchu
+			enemy[i].move(options[decision]); // wykonianie ruchu
+		}
+
+		layout[enemy[i].coordinate_y * size_x + enemy[i].coordinate_x] = 1; // po wykonaniu ruchu nastepuje zablokowanie koordynatow
+	}
+
+	delete[] layout;
+	delete[] enemies_left;
+
+	return 1;
+}
+
+std::string Board::which_directions_possible(int i, bool layout[], bool enemies_left[])
+{
+	std::string output = "";
+
+	int coordinates = enemy[i].coordinate_y * size_x + enemy[i].coordinate_x;
+	enemies_left[coordinates] = 0;
+
+	if (enemy[i].coordinate_y != 0 && layout[coordinates - size_x] == 0)
+	{
+		layout[coordinates - size_x] = 1; // chwilowo oznaczamy sprawdzane miejsce jako zajete
+
+		if (!will_cover_sb(coordinates - size_x, layout, enemies_left))
+			output += (char)0; // jezeli wszystkie warunki sa spelnione, do opcji dodajemy ten kierunek
+
+		layout[coordinates - size_x] = 0;
+	}
+
+	if (enemy[i].coordinate_y != size_y-1 && layout[coordinates + size_x] == 0)
+	{
+		layout[coordinates + size_x] = 1;
+
+		if (!will_cover_sb(coordinates + size_x, layout, enemies_left))
+			output += (char)1;
+
+		layout[coordinates + size_x] = 0;
+	}
+
+	if (enemy[i].coordinate_x != 0 && layout[coordinates - 1] == 0)
+	{
+		layout[coordinates - 1] = 1;
+		if (!will_cover_sb(coordinates - 1, layout, enemies_left))
+			output += (char)2;
+		layout[coordinates - 1] = 0;
+	}
+
+	if (enemy[i].coordinate_x != size_x-1 && layout[coordinates + 1] == 0)
+	{
+		layout[coordinates + 1] = 1;
+		if (!will_cover_sb(coordinates + 1, layout, enemies_left))
+			output += (char)3;
+		layout[coordinates + 1] = 0;
+	}
+
+	return output;
+}
+
+bool Board::will_cover_sb(int coordinates, bool layout[], bool enemies_left[])
+{
+	if (enemies_left[coordinates] == 1 && !can_move(coordinates, layout)) // jesli ktos tam stoi i nie moze sie ruszyc
+		return 1;
+
+	if (coordinates / size_x != 0 && enemies_left[coordinates - size_x] == 1 && !can_move(coordinates - size_x, layout)) // jesli ktos nad nami jest i naszym ruchem go zablokujemy
+		return 1;
+
+	if (coordinates / size_x != size_y - 1 && enemies_left[coordinates + size_x] == 1 && !can_move(coordinates + size_x, layout)) // jesli ktos jest pod nami i go zablokujemy
+		return 1;
+
+	if (coordinates % size_x != 0 && enemies_left[coordinates - 1] == 1 && !can_move(coordinates - 1, layout)) // jesli ktos jes na lewo i go zablokujemy
+		return 1;
+
+	if (coordinates % size_x != size_x - 1 && enemies_left[coordinates + 1] == 1 && !can_move(coordinates + 1, layout)) // jesli ktos jest na prawo i go zablokujemy
+		return 1;
+
+	return 0;
+}
+
+bool Board::can_move(int coordinates, bool layout[])
+{
+	if (coordinates / size_x != 0 && layout[coordinates - size_x] == 0)
+		return 1;
+
+	if (coordinates / size_x != size_y - 1 && layout[coordinates + size_x] == 0)
+		return 1;
+
+	if (coordinates % size_x != 0 && layout[coordinates - 1] == 0)
+		return 1;
+
+	if (coordinates % size_x != size_x - 1 && layout[coordinates + 1] == 0)
+		return 1;
+
+	return 0;
 }
 
 bool Board::checking_for_standing_on_enemy()
@@ -167,68 +351,16 @@ bool Board::result_checking()
 	return 1;
 }
 
-int Board::calculation_of_possible_movement(Player player)
+bool Board::end_game()
 {
-	int options = 4;
+	bool has_won = 0;
 
-	if (player.coordinate_x == 0 || objective.coordinate_x == player.coordinate_x - 1)
-		options--;
-	if (player.coordinate_x == size_x - 1 || objective.coordinate_x == player.coordinate_x + 1)
-		options--;
-	if (player.coordinate_y == 0 || objective.coordinate_y == player.coordinate_y - 1)
-		options--;
-	if (player.coordinate_y == size_y - 1 || objective.coordinate_y == player.coordinate_y + 1)
-		options--;
+	if (result == 1)
+		has_won = 1;
 
-	return options;
-}
+	animation_handling.end_game_animation(map_output, main_player.coordinate_x, main_player.coordinate_y, size_x, size_y, has_won, width);
 
-bool Board::enemy_movement()
-{
-	int direction = 0;
-
-	for (int i = 0; i < number_of_enemies; ++i)
-	{
-		direction = rand() % 4;
-
-		while(!enemy[i].move(direction, size_x, size_y, objective))
-			direction = rand() % 4;
-	}
-
-	return 1;
-}
-
-
-
-bool Board::gameplay()
-{
-	char command;
-	
-	while (true)
-	{
-		command = _getch();
-
-		if (command == 'x') // wyjscie z gry
-			exit(0);
-
-		while (!main_player.move(command, size_x, size_y))
-		{
-			Beep(220, 75); // wydanie dzwieku
-
-			command = _getch();
-
-			if (command == 'x') // wyjscie z gry
-				exit(0);
-		}
-
-		enemy_movement();
-
-		display_board();
-		result_checking();
-
-		if (result!=0) // jesli gra sie skonczy
-			break;
-	}
+	system("CLS");
 
 	return 1;
 }

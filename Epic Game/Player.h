@@ -9,9 +9,9 @@ public:
 	int coordinate_y;
 	char marker;
 	int localization;
-	int possible_movement;
 
-	bool move(char command, int size_x, int size_y);
-	bool move(int direction, int size_x, int size_y, Player objective);
+	bool move(char command, int size_x, int size_y); // main_player movement
+	bool move(int direction, int size_x, int size_y); // objective movement
+	bool move(int direction); //enemies movement
 };
 
