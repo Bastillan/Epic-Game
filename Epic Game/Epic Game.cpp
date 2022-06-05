@@ -121,6 +121,16 @@ bool game_mode(bool objective_movement)
 
 	Board main_board(map_size.first, map_size.second, level, objective_movement);
 
+	HANDLE output_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(output_handle, 3);
+	
+	if(objective_movement)
+		std::cout << "\nYou are X, evade O, catch " << char(219) << ", but watch out!!! "<<char(219)<<" will be moving. Good luck!\n\n";
+	else
+		std::cout << "\nYou are X, evade O, catch " << char(219) << ". Good luck!\n\n";
+	
+	SetConsoleTextAttribute(output_handle, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+
 	std::cout << "Everything is ready. Press ENTER\n";
 	std::cin.ignore(INT_MAX, '\n');
 	std::cin.get();

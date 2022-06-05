@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Epic Game", "Epic Game\Epic Game.vcxproj", "{708803F9-54D4-478A-B625-2B1DDF6AC702}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Epic Game Setup", "Epic Game Setup\Epic Game Setup.vdproj", "{C33112D7-6FA9-4360-9F89-56816D3FBC98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,11 @@ Global
 		{708803F9-54D4-478A-B625-2B1DDF6AC702}.Release|x64.Build.0 = Release|x64
 		{708803F9-54D4-478A-B625-2B1DDF6AC702}.Release|x86.ActiveCfg = Release|Win32
 		{708803F9-54D4-478A-B625-2B1DDF6AC702}.Release|x86.Build.0 = Release|Win32
+		{C33112D7-6FA9-4360-9F89-56816D3FBC98}.Debug|x64.ActiveCfg = Debug
+		{C33112D7-6FA9-4360-9F89-56816D3FBC98}.Debug|x86.ActiveCfg = Debug
+		{C33112D7-6FA9-4360-9F89-56816D3FBC98}.Release|x64.ActiveCfg = Release
+		{C33112D7-6FA9-4360-9F89-56816D3FBC98}.Release|x64.Build.0 = Release
+		{C33112D7-6FA9-4360-9F89-56816D3FBC98}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
