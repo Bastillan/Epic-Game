@@ -14,7 +14,7 @@ You can install the game using one of the available [installers](https://github.
 ## Gameplay
 It is a type of evasion game. Player **X** has to evade enemies **O** and try to catch objective **█**.
 
-Control takes place using the WSAD keys.
+Player controls with WSAD keys.
 
 All players (user-controlled and computer-controlled) move simultaneously in each turn. Computer-controlled players move randomly, but cannot enter the same field at the same time. If they cannot make a move they remain in place.
 
