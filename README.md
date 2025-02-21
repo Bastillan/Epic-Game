@@ -39,4 +39,4 @@ Player can also choose the size of the map from a range adjusted to the maximum 
 
 ![Gameplay](./imgs/gameplay.png)
 
-![Gameplay](./imgs/gameplay_hardmode_.png)
+![Gameplay](./imgs/gameplay_hardmode.png)
