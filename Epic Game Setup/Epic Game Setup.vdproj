@@ -33,6 +33,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4B4EFC163AF44EFC8F7B1B8A9BC58C10"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_51F5B6736D7118250C7813E885C2343D"
+        "OwnerKey" = "8:_30A0FBC36AEC48DE97D6E54F5F5CBD78"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_545F500762D463910F6457106403CDA6"
         "OwnerKey" = "8:_30A0FBC36AEC48DE97D6E54F5F5CBD78"
         "MsmSig" = "8:_UNDEFINED"
@@ -79,12 +91,6 @@
         "OwnerKey" = "8:_30A0FBC36AEC48DE97D6E54F5F5CBD78"
         "MsmSig" = "8:_UNDEFINED"
         }
-        "Entry"
-        {
-        "MsmKey" = "8:_F924A64E2EBD4F45AAD2F4F0B0E30B0C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
     }
     "Configurations"
     {
@@ -110,6 +116,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -188,6 +202,46 @@
             {
             "SourcePath" = "8:api-ms-win-crt-locale-l1-1-0.dll"
             "TargetName" = "8:api-ms-win-crt-locale-l1-1-0.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_D2DCFBA4C2674D069F5737C8FDDC67E3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4B4EFC163AF44EFC8F7B1B8A9BC58C10"
+            {
+            "SourcePath" = "8:..\\resources\\Epic_game_icon.ico"
+            "TargetName" = "8:Epic_game_icon.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_D2DCFBA4C2674D069F5737C8FDDC67E3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_51F5B6736D7118250C7813E885C2343D"
+            {
+            "SourcePath" = "8:api-ms-win-crt-conio-l1-1-0.dll"
+            "TargetName" = "8:api-ms-win-crt-conio-l1-1-0.dll"
             "Tag" = "8:"
             "Folder" = "8:_D2DCFBA4C2674D069F5737C8FDDC67E3"
             "Condition" = "8:"
@@ -364,26 +418,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F924A64E2EBD4F45AAD2F4F0B0E30B0C"
-            {
-            "SourcePath" = "8:..\\..\\Epic_game_icon.ico"
-            "TargetName" = "8:Epic_game_icon.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_D2DCFBA4C2674D069F5737C8FDDC67E3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -441,7 +475,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Epic Game"
         "ProductCode" = "8:{95E1FA43-7D61-425C-8270-57568731118E}"
-        "PackageCode" = "8:{8950F969-63F7-4A8D-ACBD-B4BB4FCAAB7F}"
+        "PackageCode" = "8:{8B324FAA-A9F2-4DA0-916D-547848D5CF29}"
         "UpgradeCode" = "8:{F5F82FA5-A574-40DA-A33D-59DAAF466E08}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -449,16 +483,16 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Bastilian Games"
+        "Manufacturer" = "8:Bastillan Games"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
         "Title" = "8:Epic Game Setup"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Bastilian"
+        "ARPCONTACT" = "8:Bastillan"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:The most Epic Game"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:_F924A64E2EBD4F45AAD2F4F0B0E30B0C"
+        "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -572,7 +606,7 @@
             "Target" = "8:_30A0FBC36AEC48DE97D6E54F5F5CBD78"
             "Folder" = "8:_BA532B82804A42669AEE2EB5C45EB449"
             "WorkingFolder" = "8:_D2DCFBA4C2674D069F5737C8FDDC67E3"
-            "Icon" = "8:_F924A64E2EBD4F45AAD2F4F0B0E30B0C"
+            "Icon" = "8:_4B4EFC163AF44EFC8F7B1B8A9BC58C10"
             "Feature" = "8:"
             }
         }
